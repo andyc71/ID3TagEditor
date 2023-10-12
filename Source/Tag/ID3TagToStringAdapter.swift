@@ -41,6 +41,7 @@ class ID3TagToStringAdapter {
         - recordingDayMonth: \((id3Tag.frames[.recordingDayMonth] as? ID3FrameRecordingDayMonth)?.debugDescription ?? "-")
         - recordingHourMinute: \((id3Tag.frames[.recordingHourMinute] as? ID3FrameRecordingHourMinute)?.debugDescription ?? "-")
         - genre: \((id3Tag.frames[.genre] as? ID3FrameGenre)?.debugDescription ?? "-")
+        - popularimeter: \((id3Tag.frames[.popularimeter] as? ID3FramePopularimeter)?.debugDescription ?? "-")
         - attachedPicture:\(ID3PictureType.allCases.reduce("", { (accumulator: String, current: ID3PictureType) in
             if let frameDescription = (id3Tag.frames[.attachedPicture(current)] as? ID3FrameAttachedPicture)?.debugDescription {
                 return accumulator + "\n" + frameDescription + "\n"

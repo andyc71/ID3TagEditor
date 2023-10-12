@@ -13,6 +13,9 @@
 [![swift package index swift version](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fchicio%2FID3TagEditor%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/chicio/ID3TagEditor)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/chicio/ID3TagEditor/main/LICENSE.md)
 
+Updates by Andy to provide:
+1) Support for ID3 POPM (Popularimeter) frame to enable user ratings and play counts to be stored.
+
 A swift library to read and modify ID3 Tag of any mp3 file. Listed in the implementations section of the [official ID3 standard website id3.org](http://id3.org/Implementations "id3.org swift").
 
 ![ID3TagEditor: A swift library to read and modify ID3 Tag of any mp3 file](https://raw.githubusercontent.com/chicio/ID3TagEditor/main/Assets/icon-logo-background.png 

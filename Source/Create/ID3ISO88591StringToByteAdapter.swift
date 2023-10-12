@@ -20,4 +20,9 @@ class ID3ISO88591StringToByteAdapter: StringToBytesAdapter {
         return frameConfiguration.encodingByteFor(version: version, encoding: .ISO88591) +
             paddingAdder.addTo(content: [UInt8](string.utf8), numberOfByte: 1)
     }
+    
+    func adaptWithoutEncodingByte(string: String, for version: ID3Version) -> [UInt8] {
+        return paddingAdder.addTo(content: [UInt8](string.utf8), numberOfByte: 1)
+    }
+
 }

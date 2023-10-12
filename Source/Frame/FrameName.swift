@@ -52,7 +52,8 @@ public enum FrameName: Equatable, Hashable, CaseIterable {
             .iTunesPodcastCategory,
             .iTunesPodcastDescription,
             .iTunesPodcastID,
-            .iTunesPodcastKeywords
+            .iTunesPodcastKeywords,
+            .popularimeter
         ]
         + frameNamesWithLocalizedContent[FrameType.unsyncronisedLyrics]!
         + frameNamesWithLocalizedContent[FrameType.comment]!
@@ -135,4 +136,6 @@ public enum FrameName: Equatable, Hashable, CaseIterable {
     case iTunesPodcastID
     /// Podcast keywords frame name, Version 2.3 and 2.4 only.
     case iTunesPodcastKeywords
+    /// Rating and play count information.
+    case popularimeter
 }

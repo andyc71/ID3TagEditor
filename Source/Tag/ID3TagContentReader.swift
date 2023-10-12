@@ -68,6 +68,35 @@ public struct AttachedPicture: Equatable {
 }
 
 /**
+ A struct to represent a user's song rating within a Popularimeter. A type identifier
+ indicates which kind of rating scale is in use, and this will always be converted
+ to RatingType.popularimeter when stored within a Popularimeter frame.
+ */
+public struct PopularimeterRating: Equatable {
+    var ratingValue: Int
+}
+
+public struct FiveStarRating: Equatable {
+    var ratingValue: Double
+}
+
+
+/**
+ A struct to represent a Popularimeter frame.
+ Used only as return type inside `ID3TagContentReader`.
+ */
+public struct Popularimeter: Equatable {
+    /// The email address associated with rating and playcount.
+    public let email: String
+    ///The user's rating of the song. See Rating struct for possible values.
+    public let rating: PopularimeterRating
+    /// The number of times the song has been played.
+    public let playCount: Int
+}
+
+
+
+/**
  A struct to represent a simplified version of frames that contain localized content.
  Used only as return type inside `ID3TagContentReader`.
  */
@@ -278,16 +307,15 @@ public class ID3TagContentReader {
     }
 
     /**
-      Read the genre frame content.
+      Read the popularimeter frame content.
      
-      - returns: the `Genre`, or null.
+      - returns: the `Popularimeter`, or null.
      */
-    public func genre() -> Genre? {
-        guard let genreFrame = (id3Tag.frames[.genre] as? ID3FrameGenre) else {
+    public func popularimeter() -> Popularimeter? {
+        guard let popularimeterFrame = (id3Tag.frames[.popularimeter] as? ID3FramePopularimeter) else {
             return nil
         }
-
-        return Genre(identifier: genreFrame.identifier, description: genreFrame.description)
+        return Popularimeter(email: popularimeterFrame.email, rating: PopularimeterRating(ratingValue: popularimeterFrame.rating), playCount: popularimeterFrame.counter)
     }
 
     /**
@@ -489,6 +517,20 @@ public class ID3TagContentReader {
     public func iTunesPodcastKeywords() -> String? {
         return (id3Tag.frames[.iTunesPodcastKeywords] as? ID3FrameWithStringContent)?.content
     }
+    
+    /**
+      Read the genre frame content.
+     
+      - returns: the `Genre`, or null.
+     */
+    public func genre() -> Genre? {
+        guard let genreFrame = (id3Tag.frames[.genre] as? ID3FrameGenre) else {
+            return nil
+        }
+
+        return Genre(identifier: genreFrame.identifier, description: genreFrame.description)
+    }
+
 
     private func localizedContent(
         getFrame: ((ID3FrameContentLanguage) -> ID3FrameWithLocalizedContent?)

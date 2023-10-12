@@ -91,6 +91,7 @@ class ID3TagTest: XCTestCase {
             - recordingDayMonth: 5 8
             - recordingHourMinute: 15 39
             - genre: Optional(ID3TagEditor.ID3Genre.metal) - Optional("Metalcore")
+            - popularimeter: -
             - attachedPicture:
             frontCover jpeg
 
@@ -197,6 +198,7 @@ class ID3TagTest: XCTestCase {
             - recordingDayMonth: -
             - recordingHourMinute: -
             - genre: Optional(ID3TagEditor.ID3Genre.metal) - Optional("Metalcore")
+            - popularimeter: -
             - attachedPicture:
             frontCover jpeg
 
