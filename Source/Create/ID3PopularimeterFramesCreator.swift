@@ -4,7 +4,7 @@
 //
 //  Created by Alex on 11 Jul 19.
 //  Copyright © 2019 Aleksey Lebedev. All rights reserved.
-//
+//  Updated and integrated by Andy Clynes in 2023.
 
 import Foundation
 
