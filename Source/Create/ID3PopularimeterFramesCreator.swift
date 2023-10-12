@@ -9,76 +9,52 @@
 import Foundation
 
 class ID3PopularimeterFramesCreator: ID3FrameCreator {
-//    private var id3FrameConfiguration: ID3FrameConfiguration
-//    private let frameContentSizeCalculator: FrameContentSizeCalculator
-//    private let frameFlagsCreator: FrameFlagsCreator
     
-    //private let timestampCreator: TimestampCreator
-    //private let frameCreator: FrameFromStringContentCreator
     private let frameHeaderCreator: FrameHeaderCreator
-    //private let stringToBytesAdapter: StringToBytesAdapter
     private let stringToBytesAdapter: ID3ISO88591StringToByteAdapter
-
-
-    /*
-    init(stringToBytesAdapter: StringToBytesAdapter,
-         id3FrameConfiguration: ID3FrameConfiguration,
-         frameContentSizeCalculator: FrameContentSizeCalculator,
-         frameFlagsCreator: FrameFlagsCreator) {
-        self.stringToBytesAdapter = stringToBytesAdapter
-        self.id3FrameConfiguration = id3FrameConfiguration
-        self.frameContentSizeCalculator = frameContentSizeCalculator
-        self.frameFlagsCreator = frameFlagsCreator
-    }*/
     
     init(frameConfiguration: ID3FrameConfiguration) {
         self.frameHeaderCreator = ID3FrameHeaderCreatorFactory.make()
         let paddingAdder = PaddingAdderToEndOfContentUsingNullChar()
+        //We are forcing the encoding to ID3ISO88591StringToByteAdapter as the ID3
+        //specification does not specify a format, and empirical testing suggests
+        //that Unicode and/or a leading byte format identifier will cause other apps
+        //to fail when parsing our frame.
         self.stringToBytesAdapter = ID3ISO88591StringToByteAdapter(paddingAdder: paddingAdder,
-                        frameConfiguration: frameConfiguration)
+                                                                   frameConfiguration: frameConfiguration)
     }
-
+    
     func createFrames(id3Tag: ID3Tag) -> [UInt8] {
-
-        if let popularimeter = id3Tag.frames[.popularimeter] as? ID3FramePopularimeter {
-
-            var content: [UInt8] = []
-            let emailData = stringToBytesAdapter.adaptWithoutEncodingByte(string: popularimeter.email, for: id3Tag.properties.version)
-            content.append(contentsOf: emailData)
-
-            content.append(UInt8(popularimeter.rating))
-
-            //let counterDataCount = MemoryLayout<UInt32>.size
-            let counterData = UInt32ToByteArrayAdapterUsingUnsafePointer().adapt(uInt32: UInt32(popularimeter.counter))
-//            let counterData = withUnsafePointer(to: popularimeter.counter.bigEndian) {
-//                $0.withMemoryRebound(to: UInt8.self, capacity: counterDataCount) {
-//                    UnsafeBufferPointer(start: $0, count: counterDataCount)
-//                }
-//            }
-            content.append(contentsOf: counterData)
-            
-
-            /*
-            tag.append(contentsOf: id3FrameConfiguration.identifierFor(
-                frameType: .popularimeter,
-                version: id3Tag.properties.version
-            ))
-            tag.append(contentsOf: frameContentSizeCalculator.calculateSizeOf(
-                content: content,
-                version: id3Tag.properties.version
-            ))
-            tag.append(contentsOf: frameFlagsCreator.createFor(version: id3Tag.properties.version))
-            tag.append(contentsOf: content)
-             */
-            
-            let frameHeader = frameHeaderCreator.createUsing(version: id3Tag.properties.version, frameType: .popularimeter, frameBody: content)
-            let frame = frameHeader + content
-            
-            return frame
         
+        guard let popularimeter = id3Tag.frames[.popularimeter] as? ID3FramePopularimeter else {
+            return []
         }
         
-        return []
-
+        var content: [UInt8] = []
+        
+        //Encode the email address, but don't put an ecoding byte at the start
+        //because other parsers will fail to read the frame. Tested with Foobar2000,
+        //EverTag and MP3Tag, all of which will see the leading byte as a separator
+        //marking the end of an empty email address and then start trying to parse
+        //the rating from the actual email address bytes.
+        let emailData = stringToBytesAdapter.adaptWithoutEncodingByte(string: popularimeter.email, for: id3Tag.properties.version)
+        content.append(contentsOf: emailData)
+        
+        //Append the rating.
+        content.append(UInt8(popularimeter.rating))
+        
+        //Append the play counter.
+        let counterData = UInt32ToByteArrayAdapterUsingUnsafePointer().adapt(uInt32: UInt32(popularimeter.counter))
+        content.append(contentsOf: counterData)
+        
+        //Create the frame header
+        let frameHeader = frameHeaderCreator.createUsing(version: id3Tag.properties.version, frameType: .popularimeter, frameBody: content)
+        
+        //Return the new frame as header plus content bytes.
+        let frame = frameHeader + content
+        
+        return frame
+        
     }
+    
 }
