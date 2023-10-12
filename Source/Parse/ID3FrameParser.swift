@@ -21,6 +21,7 @@ class ID3FrameParser {
         let frameIdentifier = getFrameIdentifier(frame: frame, version: id3Tag.properties.version)
         let frameType = id3FrameConfiguration.frameTypeFor(identifier: frameIdentifier,
                                                            version: id3Tag.properties.version)
+        
         if isAValid(frameType: frameType) {
             frameContentParsingOperations[frameType]?.parse(frame: frame,
                                                             version: id3Tag.properties.version,
@@ -29,6 +30,12 @@ class ID3FrameParser {
                 frame.size = frameSize
                 id3Tag.frames[frameName] = frame
             })
+        }
+        else if !frameIdentifier.isEmpty {
+            if frameIdentifier.first != "\0" {
+                let frameName = FrameName.raw(identifier: frameIdentifier, uniqueID: id3Tag.frames.count)
+                id3Tag.frames[frameName] = ID3FrameRaw(data: frame)
+            }
         }
     }
 

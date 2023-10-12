@@ -21,6 +21,7 @@ let frameNamesWithLocalizedContent = [
 /// This must be used to acces the frame data as identifier inside the dictionary
 /// of frame in the `ID3tag` `frames` properties.
 public enum FrameName: Equatable, Hashable, CaseIterable {
+    
     public static var allCases: [FrameName] {
         return [
             .title,
@@ -138,4 +139,6 @@ public enum FrameName: Equatable, Hashable, CaseIterable {
     case iTunesPodcastKeywords
     /// Rating and play count information.
     case popularimeter
+    /// Holds a raw frame that is not currently supported by the framework.
+    case raw(identifier: String, uniqueID: Int)
 }
