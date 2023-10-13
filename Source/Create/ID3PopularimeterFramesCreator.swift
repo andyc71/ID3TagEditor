@@ -41,7 +41,7 @@ class ID3PopularimeterFramesCreator: ID3FrameCreator {
         content.append(contentsOf: emailData)
         
         //Append the rating.
-        content.append(UInt8(popularimeter.rating))
+        content.append(UInt8(popularimeter.rating.value))
         
         //Append the play counter.
         let counterData = UInt32ToByteArrayAdapterUsingUnsafePointer().adapt(uInt32: UInt32(popularimeter.counter))

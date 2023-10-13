@@ -27,7 +27,7 @@ extension ID3TagEditorWriteReadAcceptanceTest {
         let id3Tag = try id3TagEditor.read(from: PathLoader().pathFor(name: "example-with-rating", fileType: "mp3"))
         
         XCTAssertEqual((id3Tag?.frames[.popularimeter] as? ID3FramePopularimeter)?.email, "john.doe@test.com")
-        XCTAssertEqual((id3Tag?.frames[.popularimeter] as? ID3FramePopularimeter)?.rating, 196)
+        XCTAssertEqual((id3Tag?.frames[.popularimeter] as? ID3FramePopularimeter)?.rating, PopularimeterRating(196))
         XCTAssertEqual((id3Tag?.frames[.popularimeter] as? ID3FramePopularimeter)?.counter, 8)
     }
     
@@ -51,7 +51,7 @@ extension ID3TagEditorWriteReadAcceptanceTest {
                 .album : ID3FrameWithStringContent(content: "example album"),
                 .title : ID3FrameWithStringContent(content: "example song"),
                 .attachedPicture(.frontCover) : ID3FrameAttachedPicture(picture: art, type: .frontCover, format: .jpeg),
-                .popularimeter : ID3FramePopularimeter(email: email, rating: rating, counter: counter)
+                .popularimeter : ID3FramePopularimeter(email: email, rating: PopularimeterRating(rating), counter: counter)
             ]
         )
         
@@ -68,7 +68,7 @@ extension ID3TagEditorWriteReadAcceptanceTest {
         //Load the file generated file.
         id3Tag = try id3TagEditor.read(from: pathMp3Generated)!
         
-        XCTAssertEqual((id3Tag.frames[.popularimeter] as? ID3FramePopularimeter)?.rating, rating)
+        XCTAssertEqual((id3Tag.frames[.popularimeter] as? ID3FramePopularimeter)?.rating, PopularimeterRating(rating))
         XCTAssertEqual((id3Tag.frames[.popularimeter] as? ID3FramePopularimeter)?.email, email)
         XCTAssertEqual((id3Tag.frames[.popularimeter] as? ID3FramePopularimeter)?.counter, counter)
         

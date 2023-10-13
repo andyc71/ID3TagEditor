@@ -67,6 +67,6 @@ class ID3PopularimeterFrameContentParsingOperation: FrameContentParsingOperation
             }
         }
         
-        completed(.popularimeter, ID3FramePopularimeter(email: email, rating: Int(rating), counter: Int(counter)))
+        completed(.popularimeter, ID3FramePopularimeter(email: email, rating: PopularimeterRating(rating), counter: Int(counter)))
     }
 }

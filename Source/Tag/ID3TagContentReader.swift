@@ -73,11 +73,28 @@ public struct AttachedPicture: Equatable {
  to RatingType.popularimeter when stored within a Popularimeter frame.
  */
 public struct PopularimeterRating: Equatable {
-    var ratingValue: Int
+    public let value: Int
+    
+    public init(_ value: Int) {
+        self.value = value
+    }
+    
+    public init(_ value: UInt8) {
+        self.value = Int(value)
+    }
+
 }
 
 public struct FiveStarRating: Equatable {
-    var ratingValue: Double
+    public let value: Double
+    
+    public init(_ value: Double) {
+        self.value = value
+    }
+
+    public init(_ value: Int) {
+        self.value = Double(value)
+    }
 }
 
 
@@ -315,7 +332,7 @@ public class ID3TagContentReader {
         guard let popularimeterFrame = (id3Tag.frames[.popularimeter] as? ID3FramePopularimeter) else {
             return nil
         }
-        return Popularimeter(email: popularimeterFrame.email, rating: PopularimeterRating(ratingValue: popularimeterFrame.rating), playCount: popularimeterFrame.counter)
+        return Popularimeter(email: popularimeterFrame.email, rating: popularimeterFrame.rating, playCount: popularimeterFrame.counter)
     }
 
     /**

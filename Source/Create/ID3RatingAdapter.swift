@@ -9,32 +9,15 @@ import Foundation
 
 /// Converts between ID3Ratings with different rating scales
 ///
-class ID3RatingAdapter {
-    /*
-    func adapt(_ rating: Rating, to targetRatingType: Rating.RatingType) -> Rating {
-        switch targetRatingType {
-        case .fiveStar:
-            if rating.ratingType == targetRatingType {
-                return rating
-            }
-            else {
-                return convertPopularimeterToFiveStar(rating.ratingValue)
-            }
-        case .popularimeter:
-            if rating.ratingType == targetRatingType {
-                return rating
-            }
-            else {
-                return convertFiveStarToPopularimeter(rating.ratingValue)
-            }
-        }
-    }*/
+public class ID3RatingAdapter {
     
-    func adapt(_ popRating: PopularimeterRating) -> FiveStarRating {
+    public init() { }
+
+    public func adapt(_ popRating: PopularimeterRating) -> FiveStarRating {
         convertPopularimeterToFiveStar(popRating)
     }
     
-    func adapt(_ fiveStarRating: FiveStarRating) -> PopularimeterRating {
+    public func adapt(_ fiveStarRating: FiveStarRating) -> PopularimeterRating {
         return convertFiveStarToPopularimeter(fiveStarRating)
     }
     
@@ -54,19 +37,19 @@ class ID3RatingAdapter {
     
     func convertPopularimeterToFiveStar(_ popularimeterRating: PopularimeterRating) -> FiveStarRating {
         for fiveStarToPopmRating in fiveStarToPopmRatings {
-            if fiveStarToPopmRating.value == popularimeterRating.ratingValue {
-                return FiveStarRating(ratingValue: fiveStarToPopmRating.key)
+            if fiveStarToPopmRating.value == popularimeterRating.value {
+                return FiveStarRating(fiveStarToPopmRating.key)
             }
         }
-        return FiveStarRating(ratingValue: 0)
+        return FiveStarRating(0)
     }
     
     func convertFiveStarToPopularimeter(_ fiveStarRating: FiveStarRating) -> PopularimeterRating {
-        if let popularimeterRating = fiveStarToPopmRatings[fiveStarRating.ratingValue] {
-            return PopularimeterRating(ratingValue: popularimeterRating)
+        if let popularimeterRating = fiveStarToPopmRatings[fiveStarRating.value] {
+            return PopularimeterRating(popularimeterRating)
         }
         else {
-            return PopularimeterRating(ratingValue: 0)
+            return PopularimeterRating(0)
         }
     }
 

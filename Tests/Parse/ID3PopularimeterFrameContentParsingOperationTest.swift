@@ -22,7 +22,7 @@ class ID3PopularimeterFrameContentParsingOperationTest: XCTestCase {
         
             XCTAssertEqual(frameName, .popularimeter)
             XCTAssertEqual((frame as? ID3FramePopularimeter)?.email, "john.doe@test.com")
-            XCTAssertEqual((frame as? ID3FramePopularimeter)?.rating, 1)
+            XCTAssertEqual((frame as? ID3FramePopularimeter)?.rating, PopularimeterRating(1))
             XCTAssertEqual((frame as? ID3FramePopularimeter)?.counter, 8)
             
             expectation.fulfill()
@@ -40,7 +40,7 @@ class ID3PopularimeterFrameContentParsingOperationTest: XCTestCase {
         
             XCTAssertEqual(frameName, .popularimeter)
             XCTAssertEqual((frame as? ID3FramePopularimeter)?.email, "john.doe@test.com")
-            XCTAssertEqual((frame as? ID3FramePopularimeter)?.rating, 196)
+            XCTAssertEqual((frame as? ID3FramePopularimeter)?.rating, PopularimeterRating(196))
             XCTAssertEqual((frame as? ID3FramePopularimeter)?.counter, 129862)
             
             expectation.fulfill()

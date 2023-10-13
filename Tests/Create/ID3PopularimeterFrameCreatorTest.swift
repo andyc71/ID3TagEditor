@@ -41,7 +41,7 @@ class ID3PopularimeterFrameCreatorTest: XCTestCase {
         //Create a test frame using the API.
         let id3tag = ID3Tag(
             version: .version4,
-            frames: [.popularimeter : ID3FramePopularimeter(email: email, rating: Int(rating), counter: playCount)]
+            frames: [.popularimeter : ID3FramePopularimeter(email: email, rating: PopularimeterRating(rating), counter: playCount)]
         )
         
         let frameConfiguration = ID3FrameConfiguration()
@@ -58,7 +58,7 @@ class ID3PopularimeterFrameCreatorTest: XCTestCase {
             XCTAssertEqual(frameName, FrameName.popularimeter)
             let popluarimeterFrame = frame as! ID3FramePopularimeter
             XCTAssertEqual(popluarimeterFrame.email, email)
-            XCTAssertEqual(popluarimeterFrame.rating, rating)
+            XCTAssertEqual(popluarimeterFrame.rating, PopularimeterRating(rating))
             XCTAssertEqual(popluarimeterFrame.counter, playCount)
         }
     }
@@ -94,7 +94,7 @@ class ID3PopularimeterFrameCreatorTest: XCTestCase {
         //Create a test frame using the API.
         let id3tag = ID3Tag(
             version: .version4,
-            frames: [.popularimeter : ID3FramePopularimeter(email: email, rating: Int(rating), counter: playCount)]
+            frames: [.popularimeter : ID3FramePopularimeter(email: email, rating: PopularimeterRating(rating), counter: playCount)]
         )
         
         let frameConfiguration = ID3FrameConfiguration()
@@ -111,7 +111,7 @@ class ID3PopularimeterFrameCreatorTest: XCTestCase {
             XCTAssertEqual(frameName, FrameName.popularimeter)
             let popluarimeterFrame = frame as! ID3FramePopularimeter
             XCTAssertEqual(popluarimeterFrame.email, email)
-            XCTAssertEqual(popluarimeterFrame.rating, rating)
+            XCTAssertEqual(popluarimeterFrame.rating, PopularimeterRating(rating))
             XCTAssertEqual(popluarimeterFrame.counter, playCount)
         }
     }
