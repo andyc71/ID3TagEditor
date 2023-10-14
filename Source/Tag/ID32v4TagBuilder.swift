@@ -21,7 +21,9 @@ public class ID32v4TagBuilder: TagBuilder {
     /**
      Init a ID32v4TagBuilder instance.
      */
-    public init() {}
+    public init(existingFrames: [FrameName: ID3Frame] = [:]) {
+        frames = existingFrames
+    }
 
     /**
       Set the title frame to be written by ID3TagEditor.
@@ -424,6 +426,18 @@ public class ID32v4TagBuilder: TagBuilder {
      */
     public func fileOwner(frame: ID3FrameWithStringContent) -> Self {
         frames[.fileOwner] = frame
+        return self
+    }
+    
+    /**
+      Set the popularimeter frame to be written by ID3TagEditor.
+     
+      - parameter frame: the popularimeter frame as a ID3FramePopularimeter instance.
+     
+      - returns: the instance of the builder.
+     */
+    public func popularimeter(frame: ID3FramePopularimeter) -> Self {
+        frames[.popularimeter] = frame
         return self
     }
 
