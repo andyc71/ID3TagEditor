@@ -23,10 +23,10 @@ class ID3FrameHeaderCreator: FrameHeaderCreator {
     }
 
     func createUsing(version: ID3Version, frameType: FrameType, frameBody: [UInt8]) -> [UInt8] {
-        var frameHeader: [UInt8] = id3FrameConfiguration.identifierFor(
+        guard var frameHeader: [UInt8] = id3FrameConfiguration.identifierFor(
                 frameType: frameType,
                 version: version
-        )
+        ) else { return [] }
         frameHeader.append(contentsOf: frameContentSizeCalculator.calculateSizeOf(
                 content: frameBody,
                 version: version

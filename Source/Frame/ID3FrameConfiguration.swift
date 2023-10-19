@@ -225,8 +225,12 @@ class ID3FrameConfiguration {
         return identifierSizeInBytes[version]!
     }
 
-    func identifierFor(frameType: FrameType, version: ID3Version) -> [UInt8] {
-        return identifiers[version]![frameType]!
+    func identifierFor(frameType: FrameType, version: ID3Version) -> [UInt8]? {
+        guard let identifier = identifiers[version]![frameType] else {
+            print("ERROR: frameType: \(frameType) does not exist for ID3 version \(version)")
+            return nil
+        }
+        return identifier
     }
 
     func frameTypeFor(identifier: String, version: ID3Version) -> FrameType {
