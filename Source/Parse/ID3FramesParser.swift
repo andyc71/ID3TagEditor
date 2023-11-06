@@ -31,9 +31,21 @@ class ID3FramesParser {
                 See https://github.com/chicio/ID3TagEditor/issues/88
              */
             if frameSize < id3Tag.properties.size {
-                let frame = mp3.subdata(with: NSRange(location: currentFramePosition, length: frameSize))
-                id3FrameParser.parse(frame: frame, frameSize: frameSize, id3Tag: id3Tag)
-                currentFramePosition += frame.count
+                //AC: Added this extra fix.... might be the only one that's needed.
+                if currentFramePosition + frameSize < mp3.length {
+                    let frame = mp3.subdata(with: NSRange(location: currentFramePosition, length: frameSize))
+                    id3FrameParser.parse(frame: frame, frameSize: frameSize, id3Tag: id3Tag)
+                    currentFramePosition += frame.count
+                }
+                else {
+                    //TODO: See if we can at least get the header so we can report that
+                    //within the error.
+                    let remainingBytes = mp3.length - currentFramePosition
+                    print("ERROR: Frame size reported as \(frameSize) but only \(remainingBytes) remain. Will parse frame with remaining bytes.")
+                    let frame = mp3.subdata(with: NSRange(location: currentFramePosition, length: remainingBytes))
+                    id3FrameParser.parse(frame: frame, frameSize: frameSize, id3Tag: id3Tag)
+                    break
+                }
             } else {
                 currentFramePosition = Int(id3Tag.properties.size)
             }
