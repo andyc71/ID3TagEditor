@@ -10,7 +10,7 @@ import XCTest
 
 class ID3FrameContentSizeCalculatorTest: XCTestCase {
     private let id3FrameContentSizeCalculator = ID3FrameContentSizeCalculator(
-            uInt32ToByteArrayAdapter: MockUInt32ToByteArrayAdapter(),
+            uInt32ToByteArrayAdapter: UInt32ToByteArrayAdapterUsingUnsafePointer(),
             synchsafeEncoder: SynchsafeIntegerEncoder()
     )
 
@@ -27,7 +27,8 @@ class ID3FrameContentSizeCalculatorTest: XCTestCase {
     }
 
     func testContentCalculateSizeForVersion4() {
-        let size = id3FrameContentSizeCalculator.calculateSizeOf(content: [0x1, 0x1], version: .version4)
+        let content = Array(repeating: UInt8(0xF), count: 0xFFFF)
+        let size = id3FrameContentSizeCalculator.calculateSizeOf(content: content, version: .version4)
 
         XCTAssertEqual(size, [0x3, 0x2])
     }
